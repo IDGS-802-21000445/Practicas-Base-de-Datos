@@ -1,0 +1,80 @@
+{% extends "layout2.html" %}
+{% from "_macros.html" import render_field %}
+
+{% block content %}
+<div class="container">
+    <!-- Formulario de búsqueda de ventas -->
+    <div class="row">
+        <form name="ventas" action="/ventas" id="ventas" method="post" novalidate>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="row control-group">
+                        <div class="form-group col-lg-lg--xs-4 float-label-form-group controls">
+                            {{ render_field(form.dia) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row control-group">
+                        <div class="form-group col-lg-lg--xs-4 float-label-form-group controls">
+                            {{ render_field(form.mes) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row control-group">
+                        <div class="form-group col-lg-lg--xs-4 float-label-form-group controls">
+                            <button class="btn btn-success" name="registrar" value="Registrar" >Consultar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        </form>
+    </div>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            list-style: none;
+        }
+    </style>
+    
+    <div class="row">
+        <table border="1">
+            <tr>
+                <th>Nombre</th>
+                <th>Subtotal</th>
+            </tr>
+            {% for venta in ventas %}
+            <tr>
+                <td>{{ venta.nombre }}</td>
+                <td>{{ venta.total_subtotal }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="1">Total</td>
+                <td>{{ total_ventas }}</td>
+            </tr>
+        </table>
+    </div>
+    <form action="/pizzas" method="GET">
+        <button class="btn btn-danger" type="submit">Regresar a Pizzas</button>
+    </form>
+</div>
+{% endblock %}

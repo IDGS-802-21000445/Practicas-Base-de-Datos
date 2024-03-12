@@ -1,0 +1,43 @@
+<form action="/confirmar_basedatos" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <p>Confirmar Venta</p>
+    <button class="btn btn-success" type="submit" name="guardar">Terminar</button>
+    <button class="btn btn-danger" type="submit" name="editar">Editar</button>
+</form>
+<style>
+
+    .confirm-form {
+        max-width: 400px; /* Ancho máximo del formulario */
+        margin: 0 auto; /* Centrar horizontalmente el formulario en la página */
+        padding: 20px; /* Espaciado interior del formulario */
+        border: 1px solid #ccc; /* Borde del formulario */
+        border-radius: 5px; /* Radio de borde del formulario */
+        text-align: center; /* Centrar el texto dentro del formulario */
+    }
+    
+    .confirm-form p {
+        margin-bottom: 10px; /* Espaciado inferior para los párrafos dentro del formulario */
+    }
+    
+    .confirm-form button {
+        margin-right: 10px; /* Espaciado derecho para los botones */
+    }
+    
+    .btn-success {
+        background-color: #5cb85c; /* Color de fondo del botón de éxito */
+        color: #fff; /* Color del texto del botón de éxito */
+        border: none; /* Eliminar borde del botón de éxito */
+    }
+    
+    .btn-danger {
+        background-color: #d9534f; /* Color de fondo del botón de peligro */
+        color: #fff; /* Color del texto del botón de peligro */
+        border: none; /* Eliminar borde del botón de peligro */
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>

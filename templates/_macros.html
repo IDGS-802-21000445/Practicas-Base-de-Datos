@@ -1,12 +1,12 @@
-{%macro datos(name,placeholder,type="text")%}
-    <p> <input name="{{name}}"  placeholder="{{placeholder}}" type="{{type}}">  </p>
+{%macro datos(field,type="date")%}
+    <input type="{{type}}">
 {%endmacro%}
 
 {%macro input_Form(field)%}
-    <td>
-        {{field.label}}
-    </td>
-    <dd>{{field(**kwargs)|safe}}</dd>
+<td>
+    {{field.label}}
+</td>
+<dd>{{field(**kwargs)|safe}}</dd>
 {%endmacro%}
 
 {%macro render_field(field)%}
@@ -20,3 +20,51 @@
 </ul>
 {%endif%}
 {%endmacro%}
+
+{% macro radios(field) %}
+<ul>
+    <li>
+        <label>
+            {{ field.label }}
+        </label>
+    </li>
+    {% for choice, label in field.choices %}
+    <li>
+        <label>
+            <input type="radio" name="{{ field.name }}" value="{{ choice }}"
+                {% if field.data == choice %}checked{% endif %}>
+            {{ label }}
+        </label>
+    </li>
+    {% endfor %}
+</ul>
+{% endmacro %}
+
+{% macro render_pizza(tamaño, ingredientes_seleccionados, pizzas, SubTotal) %}
+
+<style>
+    .ingredientes ul {
+        padding: 0;
+        margin: 0;
+    }
+    .ingredientes li {
+        list-style: none;
+    }
+    .numero-pizzas, .subtotal {
+        text-align: center;
+    }
+</style>
+
+<tr>
+    <td>{{ tamaño }}</td>
+    <td>
+        <ul>
+            {% for ingrediente in ingredientes_seleccionados %}
+            <li>{{ ingrediente }}</li>
+            {% endfor %}
+        </ul>
+    </td>
+    <td class="numero-pizzas">{{ pizzas }}</td>
+    <td class="subtotal">{{ SubTotal }}</td>
+</tr>
+{% endmacro %}

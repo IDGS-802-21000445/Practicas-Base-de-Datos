@@ -1,0 +1,159 @@
+{% extends "layout2.html" %}
+{% from "_macros.html" import render_field , radios, render_pizza , datos%}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <form name="pizzas" action="/pizzas" id="pizzas" method="post" novalidate>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="row control-group">
+                        <div class="form-group col-lg-lg--xs-4 float-label-form-group controls">
+                            {{ render_field(form.nombre) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row control-group">
+                        <div class="form-group col-lg-lg--xs-4 float-label-form-group controls">
+                            {{ render_field(form.direccion) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row control-group">
+                        <div class="form-group col-lg-lg--xs-4 float-label-form-group controls">
+                            {{ render_field(form.telefono) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row control-group">
+                        <div class="form-group col-lg-lg--xs-12 float-label-form-group controls">
+                            {{ radios(form.tamaño) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row control-group">
+                        <div class="form-group col-lg-lg--xs-12 float-label-form-group controls">
+                            <p>Ingredientes:</p>
+                            <input type="checkbox" id="jamon" name="jamon" checked>
+                            <label for="jamon">Jamon $10</label><br>
+                            <input type="checkbox" id="Piña" name="Piña">
+                            <label for="Piña">Piña $10</label><br>
+                            <input type="checkbox" id="Champiñones" name="Champiñones">
+                            <label for="Champiñones">Champiñones $10</label><br>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row control-group">
+                        <div class="form-group col-lg-lg--xs-12 float-label-form-group controls">
+                            <p>Fecha:</p>
+                            <input type="date" name="dia" value="{{ fecha_seleccionada }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+
+                    <div class="col-lg-4">
+                        <div class="row control-group">
+                            <div class="form-group col-lg-lg--xs-12 float-label-form-group controls">
+                                {{ render_field(form.pizzas) }}
+                            </div>
+
+                        </div>
+                        <button class="btn btn-success" name="registrar" value="Registrar">Registrar</button>
+                    </div>
+                </div>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        </form>
+    </div>
+    <div style="margin-top: 30px;"></div>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+    </style>
+
+    <div class="row">
+        <table border="1">
+            <tr>
+                <th>Tamaño</th>
+                <th>Ingredientes</th>
+                <th>Número de Pizzas</th>
+                <th>SubTotal</th>
+                <th>Acciones</th>
+            </tr>
+            {% for orden in ordenes %}
+            <tr>
+                <td>{{ orden['tamaño'] }}</td>
+                <td>
+                    <ul>
+                        {% for ingrediente in orden['ingredientes'] %}
+                        <li>{{ ingrediente }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+
+                <td>{{ orden['pizzas'] }}</td>
+                <td>{{ orden['subtotal'] }}</td>
+                <td>
+                    <form id="2" action="/quitar" method="POST">
+                        <input type="hidden" name="venta_id" value="{{ orden['id'] }}">
+                        <button class="btn btn-danger" name="quitar" type="submit">Quitar</button>
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+
+    </div>
+    <div style="margin-top: 30px;"></div>
+
+    <div style="display: flex; justify-content: space-between;">
+        <form action="/confirmar_basedatos" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="hidden" name="nombre" value="{{ nombre }}" />
+            <input type="hidden" name="direccion" value="{{ direccion }}" />
+            <input type="hidden" name="telefono" value="{{ telefono }}" />
+            <input type="hidden" name="tamaño" value="{{ tamaño }}" />
+            <input type="hidden" name="pizzas" value="{{ pizzas }}" />
+            <input type="hidden" name="dia_nombre" value="{{ dia_nombre }}" />
+            <input type="hidden" name="mes_nombre" value="{{ mes_nombre }}" />
+            <input type="hidden" name="subtotal" value="{{ SubTotal }}" />
+            <input type="hidden" name="ingredientes" value="{{ ingredientes_seleccionados }}" />
+            <button class="btn btn-success" type="submit" name="Basedatos">Terminar</button>
+        </form>
+    
+        <form action="/ventas" method="GET">
+            <button class="btn btn-danger" type="submit">Ventas</button>
+        </form>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+</div>
+
+{% endblock %}
